@@ -1,0 +1,52 @@
+-- Logical Operators
+let TRUE  = \x y -> x
+let FALSE = \x y -> y
+let ITE   = \b x y -> b x y
+let NOT   = \b x y -> b y x
+let AND   = \b1 b2 -> ITE b1 b2 FALSE
+let OR    = \b1 b2 -> ITE b1 TRUE b2
+
+-- Numeric Constants
+let ZERO  = \f x -> x
+let ONE   = \f x -> f x
+let TWO   = \f x -> f (f x)
+let THREE = \f x -> f (f (f x))
+let FOUR  = \f x -> f (f (f (f x)))
+let FIVE  = \f x -> f (f (f (f (f x))))
+let SIX   = \f x -> f (f (f (f (f (f x)))))
+
+-- Pair and Selection Functions
+let PAIR  = \x y b -> ITE b x y
+let FST   = \p     -> p TRUE
+let SND   = \p     -> p FALSE
+let SKIP1 = \f p -> PAIR TRUE (ITE (FST p) (f (SND p)) (SND p))
+
+-- Arithmetic Operations
+let INCR  = \n f x -> f (n f x)
+let SUC   = \n f x -> f (n f x)
+let ADD   = \n m -> n SUC m
+let MUL   = \n m -> n (ADD m) ZERO
+let DECR  = \n -> SND (n (SKIP1 INCR) (PAIR FALSE ZERO))
+let SUB   = \n m -> (m DECR) n
+
+-- Comparison and Conditionals
+let ISZ   = \e -> (e (\n -> FALSE) TRUE)
+let EQL   = \n m -> AND (ISZ (SUB n m)) (ISZ (SUB m n))
+----------------------------------------------------------------------------------
+
+
+
+
+
+-- SUM
+-- n as argument, returns sum of 0 + 1 + ... + n
+
+let SUM = \rec -> \n -> ITE (ISZ n) ZERO (ADD n (rec (DECR n)))
+
+--rec has to take this as an arguent: \n -> ITE (ISZ n) ZERO (ADD n (rec (DECR n)))
+
+-- Y combinator
+let Y = \step -> (\x -> step (x x)) (\x -> step (x x))
+
+-- Remember OMEGA - Infinite loop
+let OMEGA = (\x -> x x)(\x -> x x)
