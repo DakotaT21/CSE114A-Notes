@@ -36,8 +36,6 @@ let EQL   = \n m -> AND (ISZ (SUB n m)) (ISZ (SUB m n))
 
 
 
-
-
 -- SUM
 -- n as argument, returns sum of 0 + 1 + ... + n
 
@@ -45,8 +43,21 @@ let SUM = \rec -> \n -> ITE (ISZ n) ZERO (ADD n (rec (DECR n)))
 
 --rec has to take this as an arguent: \n -> ITE (ISZ n) ZERO (ADD n (rec (DECR n)))
 
+
 -- Y combinator
 let Y = \step -> (\x -> step (x x)) (\x -> step (x x))
 
 -- Remember OMEGA - Infinite loop
 let OMEGA = (\x -> x x)(\x -> x x)
+
+
+--Use Y to make a recursive version of SUM
+let SUMREAL = Y SUM
+
+--Three should evaluate to 1+2+3 = 6
+eval example_sum :
+   SUMREAL THREE =~> (\f x -> f (f (f (f (f (f x)))))) 
+   
+-- We wrote sum with a recursive call
+-- We replaced the recursive call with 'rec' and took 'rec' as the first argument
+-- Passed the modified SUM to the Y combinator
