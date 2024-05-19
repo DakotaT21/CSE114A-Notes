@@ -1,7 +1,7 @@
 -- Agenda:
     -- Lists 
         -- List Constructors
-        -- PAttern matching on lists
+        -- Pattern matching on lists
         -- Writing list literals
         -- List append
         -- Strings are also lists

@@ -34,6 +34,9 @@ data Expr = Plus Expr Expr
 -- let x = 5 in x + 4
 tinyLetExpression :: Expr
 tinyLetExpression = ELet "x" (ENum 5) (Plus (EVar "x") (ENum 4))
+-- eval tinyLetExpression [] = 9
+-- evaluating the tinyLetExpression with an empty environment?
+
 
 -- let x = 5 in (let y = 4 in x + y)
 biggerLetExpression :: Expr
@@ -78,7 +81,7 @@ eval (Times n m) env = eval n env * eval m env
 -- whatever the value of its body is,
 -- but taking into account the new binding that the let-expression created.
 -- Note: don't forget that the expression bound in the binding
--- part of the let-expression has to be evaluated too!
+-- part of the let-expression has to be evaluated too! : (eval expr env)
 eval (ELet s expr bodyExpr) env = eval bodyExpr (extendEnv s (eval expr env) env)
 
 lookupInEnv :: Env -> String -> Int 
@@ -87,6 +90,7 @@ lookupInEnv ((id,val):xs) s = if s == id then val else lookupInEnv xs s
 
 extendEnv :: String -> Int -> Env -> Env
 extendEnv s n env = (s,n):env
+-- Adds new entries to the environment ie extendEnv "z" 5 exampleEnv --> [(z, 5), (x, 3), (y, 4)]
 
 -- So far, this has all been quite boring.
 
